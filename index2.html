@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Phone Number Validation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.8.5/libphonenumber-js.min.js"></script>
+    <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+  </head>
+  <body>
+    <h2>Phone Number Validation</h2>
+
+    <input type="text" class="phone">
+    <div id="output"></div>
+
+    <script>
+      const inputElement = document.querySelector('.phone');
+      const outputElement = document.getElementById('output');
+      inputElement.addEventListener('input', function () {
+        const phoneNumber = inputElement.value;
+        try {
+          const phoneNumberObj = libphonenumber.parsePhoneNumberFromString(
+            phoneNumber,
+            'PK'
+          );
+          if (phoneNumberObj.isValid()) {
+            const formattedPhoneNumber = phoneNumberObj.formatNational();
+            const countryCode = phoneNumberObj.country;
+            const flagElement = document.createElement('span');
+            flagElement.className = `flag-icon flag-icon-${countryCode.toLowerCase()}`;
+            outputElement.innerHTML = '';
+            outputElement.appendChild(flagElement);
+            outputElement.appendChild(document.createTextNode(` ${formattedPhoneNumber}`));
+          } else {
+            outputElement.innerHTML = 'Invalid phone number';
+          }
+        } catch (error) {
+          outputElement.innerHTML = 'Invalid phone number';
+        }
+      });
+    </script>
+  </body>
+</html>
