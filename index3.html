@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Phone Number Validation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.8.5/libphonenumber-js.min.js"></script>
+  <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+
+</head>
+
+<body>
+  <h2>Phone Number Validation</h2>
+
+  <input type="text" class="phone" value="+">
+  <div id="output"></div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // const inputElement = document.querySelector('.phone');
+    // const outputElement = document.getElementById('output');
+    // inputElement.addEventListener('input', function (e) {
+    //   if (e.keyCode == 187 || e.keyCode == 107) {
+    //       e.preventDefault();
+    //       return;
+    //   }
+    //   const phoneNumber = inputElement.value;
+    //   try {
+    //     const phoneNumberObj = libphonenumber.parsePhoneNumberFromString(
+    //       phoneNumber,
+    //       'PK'
+    //     );
+    //     if (phoneNumberObj.isValid()) {
+    //       const formattedPhoneNumber = phoneNumberObj.formatInternational();
+    //       const countryCode = phoneNumberObj.country;
+    //       const flagElement = document.createElement('span');
+    //       flagElement.className = `flag-icon flag-icon-${countryCode.toLowerCase()}`;
+    //       inputElement.value = formattedPhoneNumber;
+    //       outputElement.innerHTML = '';
+    //       outputElement.appendChild(flagElement);
+    //       outputElement.appendChild(document.createTextNode(` ${formattedPhoneNumber}`));
+    //     } else {
+    //       outputElement.innerHTML = 'Invalid phone number';
+    //     }
+    //   } catch (error) {
+    //     outputElement.innerHTML = 'Invalid phone number';
+    //   }
+    // });
+
+    $(document).ready(function () {
+      const inputElement = $('.phone');
+      const outputElement = $('#output');
+
+      inputElement.on('input', function (e) {
+        console.log(e.key);
+        console.log(e.keyCode);
+        if (e.keyCode == 187 || e.keyCode == 107) {
+          e.preventDefault();
+          return;
+        }
+        const phoneNumber = inputElement.val();
+        try {
+          const phoneNumberObj = libphonenumber.parsePhoneNumberFromString(
+            phoneNumber,
+            'PK'
+          );
+          if (phoneNumberObj.isValid()) {
+            const formattedPhoneNumber = phoneNumberObj.formatInternational();
+            const countryCode = phoneNumberObj.country;
+            const flagElement = $('<span>').addClass(`flag-icon flag-icon-${countryCode.toLowerCase()}`);
+            inputElement.val(formattedPhoneNumber);
+            outputElement.empty();
+            outputElement.append(flagElement);
+            outputElement.append(document.createTextNode(` ${formattedPhoneNumber}`));
+          } else {
+            outputElement.text('Invalid phone number');
+          }
+        } catch (error) {
+          outputElement.text('Invalid phone number');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
